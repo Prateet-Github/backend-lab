@@ -3,7 +3,7 @@ import env from '../configs/env.js';
 
 const router = express.Router();
 
-router.get('/health', (_req, res) => {
+router.get('/', (_req, res) => {
   res.status(200).json({ 
     status: 'OK', 
     service: 'Backend Lab Server', 
