@@ -1,15 +1,23 @@
+import env from "./env.js";
 import { createClient } from "redis";
 
 export const redisClient = createClient({
-  url: process.env.REDIS_URL
+  url: env.REDIS_URL
 });
 
 redisClient.on("connect", () => {
-  console.log("Redis connected");
+  console.log("Redis connection established");
 });
 
 redisClient.on("error", (err) => {
   console.error("Redis error:", err);
 });
 
-await redisClient.connect();
+export const connectRedis = async () => {
+  if (redisClient.isOpen) {
+    console.log("Redis already connected");
+    return;
+  }
+
+  await redisClient.connect();
+};
