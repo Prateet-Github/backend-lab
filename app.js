@@ -1,6 +1,7 @@
 import express from 'express';
 import healthRoute from './routes/health.route.js';
 import authRoute from './routes/auth.route.js';
+import "./configs/redis.js"; 
 
 const app = express();
 app.use(express.json());
