@@ -44,7 +44,7 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
-    console.log('User found:', user);
+    // console.log(user);
 
     const isPasswordValid = await comparePassword(password, user.password);
     if (!isPasswordValid) {
