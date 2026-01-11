@@ -1,6 +1,10 @@
 import User  from '../models/user.model.js';
 import { hashPassword, comparePassword } from '../utils/password.js';
 import { signToken } from '../utils/jwt.js';
+import { redisClient } from '../configs/redis.js';
+
+const MAX_FAILED_ATTEMPTS = 2;
+const LOCK_TIME_SECONDS = 15 * 60;
 
 export const register = async (req, res) => {
   try {
@@ -34,37 +38,54 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const {username, password} = req.body;
+    const { username, password } = req.body;
+
     if (!username || !password) {
-      return res.status(400).json({ message: 'Username and password are required' });
+      return res.status(400).json({ message: "Username and password are required" });
     }
 
     const user = await User.findOne({ username });
     if (!user) {
-      return res.status(401).json({ message: 'Invalid username or password' });
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // console.log(user);
+    const redisKey = `login:fail:${user._id}`;
+
+    const failedAttempts = await redisClient.get(redisKey);
+    if (failedAttempts && Number(failedAttempts) >= MAX_FAILED_ATTEMPTS) {
+      return res.status(403).json({
+        message: "Account temporarily locked. Try again later."
+      });
+    }
 
     const isPasswordValid = await comparePassword(password, user.password);
+
     if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Invalid username or password' });
+      const attempts = await redisClient.incr(redisKey);
+
+      if (attempts === 1) {
+        await redisClient.expire(redisKey, LOCK_TIME_SECONDS);
+      }
+
+      return res.status(401).json({ message: "Invalid credentials" });
     }
+
+    await redisClient.del(redisKey);
 
     const token = signToken({ id: user._id });
 
-    res.status(200).json({ 
-      user:{
+    return res.status(200).json({
+      user: {
         id: user._id,
         username: user.username,
         email: user.email
       },
       token
-     });
+    });
 
   } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ message: 'Server error during login' });
+    console.error("Login error:", error);
+    return res.status(500).json({ message: "Server error during login" });
   }
 };
 
