@@ -1,0 +1,4 @@
+export const AUTH_SECURITY = {
+  MAX_FAILED_ATTEMPTS: 2,
+  LOCK_TIME_SECONDS:  10 
+};

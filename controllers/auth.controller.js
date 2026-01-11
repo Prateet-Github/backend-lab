@@ -2,9 +2,7 @@ import User  from '../models/user.model.js';
 import { hashPassword, comparePassword } from '../utils/password.js';
 import { signToken } from '../utils/jwt.js';
 import { redisClient } from '../configs/redis.js';
-
-const MAX_FAILED_ATTEMPTS = 2;
-const LOCK_TIME_SECONDS = 15 * 60;
+import { AUTH_SECURITY } from '../configs/security.js';
 
 export const register = async (req, res) => {
   try {
@@ -38,6 +36,7 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
+    const { MAX_FAILED_ATTEMPTS, LOCK_TIME_SECONDS } = AUTH_SECURITY;
     const { username, password } = req.body;
 
     if (!username || !password) {
