@@ -1,7 +1,8 @@
 import Fastify from 'fastify';
 import { healthRoute } from './routes/health.route.ts';
+import env from './configs/env.js';
 
-const isDev = process.env.NODE_ENV !== 'production';
+const isDev = env.NODE_ENV !== 'production';
 
 export const buildApp = () => {
   const app = Fastify({
