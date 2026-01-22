@@ -1,6 +1,7 @@
 import Fastify from 'fastify';
 import { healthRoute } from './routes/health.route.ts';
 import env from './configs/env.js';
+import { authRoute } from './routes/auth.route.ts';
 
 const isDev = env.NODE_ENV !== 'production';
 
@@ -22,6 +23,10 @@ export const buildApp = () => {
 
   app.register(healthRoute, {
     prefix: '/api/health',
+  });
+
+  app.register(authRoute, {
+    prefix: '/api/auth',
   });
 
   return app;
