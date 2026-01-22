@@ -5,7 +5,7 @@ const startServer = async () => {
   const app = buildApp();
 
   try {
-    app.listen({ port: env.PORT, host: '0.0.0.0' });
+    app.listen({ port: parseInt(env.PORT || '3000'), host: '0.0.0.0' });
   } catch (err) {
     app.log.error(err);
     process.exit(1);

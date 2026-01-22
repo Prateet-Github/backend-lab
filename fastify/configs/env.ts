@@ -2,13 +2,13 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const env = {
+const env: { [key: string]: string | undefined } = {
   PORT: process.env.PORT,
   NODE_ENV: process.env.NODE_ENV,
 };
 
 const requiredVars = [
-  'PORT', 
+  'PORT',
   'NODE_ENV',
 ];
 
