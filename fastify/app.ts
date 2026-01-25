@@ -9,15 +9,15 @@ export const buildApp = () => {
   const app = Fastify({
     logger: isDev
       ? {
-          transport: {
-            target: 'pino-pretty',
-            options: {
-              translateTime: 'HH:MM:ss',
-              colorize: true,
-              ignore: 'pid,hostname',
-            },
+        transport: {
+          target: 'pino-pretty',
+          options: {
+            translateTime: 'HH:MM:ss',
+            colorize: true,
+            ignore: 'pid,hostname',
           },
-        }
+        },
+      }
       : true,
   });
 

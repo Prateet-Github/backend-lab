@@ -5,6 +5,12 @@ interface LoginBody {
   password: string;
 }
 
+interface RegisterBody {
+  username: string;
+   email: string;
+  password: string
+}
+
 export const login = async (
   request: FastifyRequest<{ Body: LoginBody }>,
   reply: FastifyReply
