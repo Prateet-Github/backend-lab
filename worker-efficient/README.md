@@ -1,1 +1,1 @@
-## Multi threading using customised need for no. of cores available
+## Multi threading by utilising multiple CPU cores.

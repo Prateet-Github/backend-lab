@@ -4,7 +4,7 @@ import { Worker } from 'worker_threads';
 const app = express();
 const PORT = 5001;
 const HOST = '0.0.0.0';
-const THREADS = 4;
+export const THREADS = 4;
 
 const createWorker = () => {
   return new Promise((resolve, reject) => {
@@ -29,22 +29,18 @@ app.get('/non-blocking', (_req, res) => {
 res.status(200).send("This is non-blocking.")
 });
 
-app.get('/blocking', (_req, res) => {
+app.get('/blocking', async (_req, res) => {
+  const workerPromises = [];
 
-const workerPromises = [];
-for(let i = 0; i < THREADS; i++){
-  workerPromises.push(createWorker());
-}
+  for (let i = 0; i < THREADS; i++) {
+    workerPromises.push(createWorker());
+  }
 
-const threadResults = Promise.all(workerPromises);
-const total = 
-    threadResults[0] +
-    threadResults[1] +
-    threadResults[2] +
-    threadResults[3];
+  const threadResults = await Promise.all(workerPromises);
 
-    res.status(200).send(`Result is ${total}`);
+  const total = threadResults.reduce((sum, value) => sum + value, 0);
 
+  res.status(200).send(`Efficient result is ${total}`);
 });
 
 app.listen(PORT,HOST, () => {
