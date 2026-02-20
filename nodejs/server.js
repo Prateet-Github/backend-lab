@@ -34,10 +34,8 @@ else if (req.method === 'POST' && req.url === '/users') {
 }
 
 else if (req.method === 'DELETE' && req.url === '/users') {
-const urlParts = req.url.split('/');
-const userId = parseInt(urlParts[urlParts.length - 1]);
-
-users = users.filter(user => user.id !== userId);
+    const id = parseInt(req.url.split('/')[2]);
+    users = users.filter(user => user.id !== id);
 
 
     res.writeHead(200, { 'Content-Type': 'application/json' });
