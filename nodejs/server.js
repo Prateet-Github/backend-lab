@@ -1,12 +1,56 @@
 import http from 'http';
 
-const server = http.createServer((_req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello, from Node.js!\n');
-});
+let users = [
+  { id: 1, name: 'Alice' },
+  { id: 2, name: 'Bob' },
+  { id: 3, name: 'Charlie' },
+];
 
-const PORT = process.env.PORT || 3000;
+const PORT = 5001;
+const server = http.createServer((req, res) => {
+ 
+  if(req.method === 'GET' && req.url === '/users') {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(users));
+  }
+else if (req.method === 'POST' && req.url === '/users') {
+    let body = '';
+
+     req.on('data', chunk => {
+      body += chunk.toString();
+    });
+
+    req.on('end', () => {
+      const newUser = JSON.parse(body);
+      newUser.id = users.length + 1;
+      users.push(newUser);
+    
+
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({message: 'User added successfully', user: newUser }));
+
+    });
+
+}
+
+else if (req.method === 'DELETE' && req.url === '/users') {
+const urlParts = req.url.split('/');
+const userId = parseInt(urlParts[urlParts.length - 1]);
+
+users = users.filter(user => user.id !== userId);
+
+
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ message: 'User deleted successfully' }));
+
+  }
+
+  else{
+    res.writeHead(404);
+    res.end("Route not found");
+  }
+
+});
 
 server.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
