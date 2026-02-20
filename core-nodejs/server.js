@@ -1,9 +1,12 @@
 import http from "http";
 
-const server = http.createServer((req,res) => {
-  res.end("Node.js Server")
-})
+const PORT = 5001;
+const HOST = '127.0.0.1';
 
-server.listen(5001,()=>{
-  console.log("Server is running at port 5001")
-})
+const server = http.createServer((_req,res) => {
+  res.end("Node.js Server");
+});
+
+server.listen(PORT, HOST, () => {
+  console.log(`Server is running at http://${HOST}:${PORT}`);
+});
