@@ -15,6 +15,26 @@ const server = http.createServer((req,res) => {
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(users));
   }
+  else if(req.method === 'POST' && req.url === '/users'){
+   let body = '';
+
+   req.on('data', chunk => {
+    body += chunk.toString();
+   })
+
+   req.on('end', () => {
+    const newUser = JSON.parse(body);
+    newUser.id = users.length + 1;
+    users.push(newUser);
+
+    res.statusCode = 201;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({
+      message:"New user added", 
+      user : newUser
+    }));
+   })
+  }
 });
 
 server.listen(PORT, HOST, () => {
