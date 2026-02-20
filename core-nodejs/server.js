@@ -10,11 +10,13 @@ let users = [
 ];
 
 const server = http.createServer((req,res) => {
+
   if(req.method === "GET" && req.url === '/users'){
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(users));
   }
+
   else if(req.method === 'POST' && req.url === '/users'){
    let body = '';
 
@@ -34,6 +36,18 @@ const server = http.createServer((req,res) => {
       user : newUser
     }));
    })
+  }
+
+  else if(req.method === 'DELETE' && req.url.startsWith('/users/')){
+
+    const id = parseInt(req.url.split('/')[2]);
+    users = users.filter(user => user.id !== id);
+
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({
+      message:"User deleted"
+    }))
   }
 });
 
