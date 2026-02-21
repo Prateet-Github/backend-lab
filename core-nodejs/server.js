@@ -49,6 +49,11 @@ const server = http.createServer((req,res) => {
       message:"User deleted"
     }))
   }
+
+  else{
+    res.statusCode = 404;
+    res.end("Route not found")
+  }
 });
 
 server.listen(PORT, HOST, () => {
