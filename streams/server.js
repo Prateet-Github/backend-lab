@@ -10,7 +10,15 @@ const server = http.createServer((_req,res) => {
 
 // with streams
 const readableStream = fs.createReadStream('sample.txt');
-readableStream.pipe(res)
+// readableStream.pipe(res)
+const writableStream = fs.createWriteStream('output.txt');
+
+readableStream.on('data', (chunk) => {
+  console.log('Chunk:', chunk);
+  writableStream.write(chunk);
+});
+
+res.end();
 
 });
 
