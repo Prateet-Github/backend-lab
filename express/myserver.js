@@ -12,7 +12,7 @@ let users = [
 
 app.get('/:id',(req,res)=>{
   const withId = req.params.id
-  const user = users.find(user => user.id == withId)
+  const user = users.find(user => user.id === parseInt(withId))
   if(user){
     res.status(200).json(user)
   }else{
