@@ -1,2 +1,1 @@
-# Backend Lab for Express, Koa, Fastify, NestJS & Next.js
-
+# Backend Lab for Node.js & Next.js
