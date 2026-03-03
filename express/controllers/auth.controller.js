@@ -73,13 +73,19 @@ export const login = async (req, res) => {
 
     const token = signToken({ id: user._id });
 
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    maxAge: 24 * 60 * 60 * 1000
+  });
+
     return res.status(200).json({
       user: {
         id: user._id,
         username: user.username,
         email: user.email
-      },
-      token
+      }
     });
 
   } catch (error) {
