@@ -8,7 +8,7 @@ const startServer = async() => {
   try {
     
     await connectDb();
-    await connectRedis();
+    // await connectRedis();
 
     app.listen(env.PORT, () => {
       console.log(`Server running in ${env.NODE_ENV} mode on port ${env.PORT}`);
