@@ -7,7 +7,8 @@ const env = {
   NODE_ENV: process.env.NODE_ENV,
   MONGODB_URI: process.env.MONGODB_URI,
   JWT_SECRET: process.env.JWT_SECRET,
-  REDIS_URL: process.env.REDIS_URL
+  REDIS_URL: process.env.REDIS_URL,
+  WEBSOCKET_PORT: process.env.WEBSOCKET_PORT
 };
 
 const requiredVars = [
@@ -15,7 +16,8 @@ const requiredVars = [
   'NODE_ENV',
   'MONGODB_URI',
   'JWT_SECRET',
-  'REDIS_URL'
+  'REDIS_URL',
+  'WEBSOCKET_PORT'
 ];
 
 requiredVars.forEach((key) => {
