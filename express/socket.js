@@ -20,8 +20,8 @@ console.log('User connected:', socket.id);
     io.emit("chat-message", msg);
   });
 
-socket.on("disconnect", () => {
-  console.log("User disconnected:", socket.id);
+ socket.on("disconnect", () => {
+    console.log("User disconnected:", socket.id);
   });
 
 })
