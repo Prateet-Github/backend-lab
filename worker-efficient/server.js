@@ -29,7 +29,6 @@ app.get('/non-blocking', (_req, res) => {
 res.status(200).send("This is non-blocking.")
 });
 
-// This endpoint will create multiple worker threads to perform a CPU-intensive task without blocking the main event loop.
 app.get('/blocking', async (_req, res) => {
   const workerPromises = [];
 
