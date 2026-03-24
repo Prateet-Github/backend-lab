@@ -1,0 +1,2 @@
+Hello, this is a writable stream example.
+This will be written to the output.txt file.
